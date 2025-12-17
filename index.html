@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>UniBase – Student Housing in Mabela</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --primary: #6b8f71;
+      --primary-dark: #44614a;
+      --accent: #d9b07a;
+      --light: #f7f9f7;
+      --bg: #ecf3ef;
+      --text: #263238;
+      --muted: #7a8b94;
+    }
+  
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+  
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top left, #f5fbf7 0, #e6f0ea 45%, #dde8e2 100%);
+      color: var(--text);
+      line-height: 1.6;
+      scroll-behavior: smooth;
+    }
+  
+    img { max-width: 100%; display: block; }
+    a { color: inherit; text-decoration: none; }
+  
+    /* Layout frame */
+  
+    .page-shell {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+  
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(248, 252, 249, 0.96);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(173, 190, 180, 0.4);
+    }
+  
+    .nav-container {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0.75rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+  
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+  
+    .brand-logo {
+      width: 65px;
+      height: 65px;
+      border-radius: 18px;
+      overflow: hidden;
+      background: linear-gradient(145deg, #eaf3ec 0, #fdfbf7 40%, #e6efe8 100%);
+      box-shadow: 0 18px 24px rgba(72, 104, 80, 0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .brand-logo img {
+      width: 80%;
+      height: auto;
+    }
+  
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+    }
+  
+    .brand-text span:first-child {
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-size: 1.2rem;
+    }
+  
+    .brand-text span:last-child {
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+  
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+  
+    nav li a {
+      font-size: 0.95rem;
+      padding: 0.35rem 0.75rem;
+      border-radius: 999px;
+      transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+    }
+  
+    nav li a:hover,
+    nav li a.active {
+      background: var(--primary);
+      color: #fff;
+      box-shadow: 0 8px 18px rgba(68, 97, 74, 0.3);
+    }
+  
+    .nav-cta {
+      border-radius: 999px;
+      padding: 0.4rem 1rem;
+      border: 1px solid var(--primary);
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--primary-dark);
+      background: #fdfcf9;
+    }
+  
+    .nav-cta:hover {
+      background: var(--primary);
+      color: #fff;
+    }
+  
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 4px;
+      cursor: pointer;
+    }
+  
+    .hamburger span {
+      width: 20px;
+      height: 2px;
+      background: var(--text);
+      border-radius: 999px;
+    }
+  
+    main {
+      max-width: 1120px;
+      margin: 1.75rem auto 0;
+      padding: 1.5rem;
+      background: #ffffff;
+      border-radius: 26px;
+      box-shadow:
+        0 32px 80px rgba(18, 40, 26, 0.18),
+        0 0 0 1px rgba(145, 163, 150, 0.18);
+      position: relative;
+    }
+  
+    /* soft background shapes behind content */
+    main::before,
+    main::after {
+      content: "";
+      position: absolute;
+      pointer-events: none;
+      z-index: -1;
+    }
+  
+    main::before {
+      inset: -60px 40% auto -80px;
+      background:
+        radial-gradient(circle at top, rgba(107, 143, 113, 0.15), transparent 60%),
+        linear-gradient(135deg, rgba(211, 227, 216, 0.7), rgba(243, 239, 231, 0.3));
+      opacity: 0.9;
+      border-radius: 40px;
+      filter: blur(4px);
+    }
+  
+    main::after {
+      inset: 20% -120px -80px auto;
+      background:
+        radial-gradient(circle at top right, rgba(220, 191, 135, 0.18), transparent 60%),
+        linear-gradient(160deg, rgba(192, 214, 202, 0.85), rgba(231, 241, 236, 0.2));
+      opacity: 0.8;
+      border-radius: 42px;
+      filter: blur(6px);
+    }
+  
+    section {
+      padding: 3.6rem 0 3rem;
+      border-bottom: 1px dashed rgba(188, 203, 193, 0.7);
+    }
+  
+    section:first-of-type {
+      padding-top: 2.4rem;
+    }
+  
+    section:last-of-type {
+      border-bottom: none;
+      padding-bottom: 4rem;
+    }
+  
+    .section-kicker {
+      font-size: 0.8rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--primary-dark);
+      margin-bottom: 0.4rem;
+    }
+  
+    h1, h2 {
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+    }
+  
+    h1 {
+      font-size: clamp(2.1rem, 3vw + 1rem, 3.1rem);
+      margin-bottom: 0.7rem;
+    }
+  
+    h2 {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+  
+    p {
+      margin-bottom: 0.7rem;
+      color: #384b4a;
+    }
+  
+    .two-column {
+      display: grid;
+      grid-template-columns: minmax(0, 3fr) minmax(0, 2.2fr);
+      gap: 2.4rem;
+      align-items: start;
+    }
+  
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.22rem 0.8rem;
+      border-radius: 999px;
+      background: rgba(232, 243, 234, 0.9);
+      color: var(--primary-dark);
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      margin-bottom: 0.7rem;
+      box-shadow: 0 8px 18px rgba(180, 198, 186, 0.7);
+    }
+  
+    .badge-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+  
+    .hero-subtitle {
+      max-width: 32rem;
+      font-size: 0.98rem;
+      color: #4c605f;
+    }
+  
+    .hero-cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.9rem;
+      align-items: center;
+      margin-top: 1.4rem;
+    }
+  
+    .hero-cards {
+      position: relative;
+      margin-top: 0.8rem;
+    }
+  
+    /* “floor plan” style background grid behind hero cards */
+    .hero-cards::before {
+      content: "";
+      position: absolute;
+      inset: -24px -18px -18px -18px;
+      background-image:
+        linear-gradient(135deg, rgba(107, 143, 113, 0.09) 1px, transparent 0),
+        linear-gradient(225deg, rgba(107, 143, 113, 0.08) 1px, transparent 0);
+      background-size: 22px 22px;
+      opacity: 0.5;
+      border-radius: 22px;
+      z-index: -1;
+    }
+  
+    .hero-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.9rem;
+    }
+  
+    .card {
+      background: linear-gradient(145deg, #ffffff 0, #f8fbf9 50%, #ffffff 100%);
+      border-radius: 18px;
+      border: 1px solid rgba(191, 205, 195, 0.9);
+      padding: 1rem 1.1rem;
+      box-shadow:
+        0 18px 40px rgba(18, 40, 26, 0.08),
+        0 0 0 1px rgba(255, 255, 255, 0.9);
+      font-size: 0.9rem;
+    }
+  
+    .card-title {
+      font-weight: 600;
+      margin-bottom: 0.2rem;
+    }
+  
+    .card-tag {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--muted);
+      margin-bottom: 0.4rem;
+    }
+  
+    .card:hover {
+      box-shadow:
+        0 20px 45px rgba(18, 40, 26, 0.14),
+        0 0 0 1px rgba(130, 158, 140, 0.7);
+      transform: translateY(-1px);
+      transition: all 0.16s ease;
+    }
+  
+    .list-compact {
+      list-style: none;
+      padding-left: 0;
+      margin-top: 0.3rem;
+    }
+  
+    .list-compact li {
+      display: flex;
+      gap: 0.4rem;
+      font-size: 0.88rem;
+      margin-bottom: 0.28rem;
+      color: #4b5c5a;
+    }
+  
+    .list-compact li::before {
+      content: "•";
+      color: var(--primary);
+      font-size: 1rem;
+      line-height: 1.2;
+    }
+  
+    .pill-row {
+      margin-top: 0.6rem;
+    }
+  
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      padding: 0.2rem 0.6rem;
+      border-radius: 999px;
+      background: rgba(236, 239, 241, 0.95);
+      font-size: 0.78rem;
+      color: #546e7a;
+      margin-right: 0.3rem;
+      margin-bottom: 0.3rem;
+    }
+  
+    .pill-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--primary);
+    }
+  
+    form {
+      display: grid;
+      gap: 0.7rem;
+      margin-top: 0.8rem;
+    }
+  
+    label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+    }
+  
+    input, select, textarea {
+      width: 100%;
+      padding: 0.55rem 0.7rem;
+      border-radius: 11px;
+      border: 1px solid #c4d3c9;
+      font-size: 0.9rem;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.18s, box-shadow 0.18s, background 0.18s;
+      background: #fbfdfc;
+    }
+  
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(107, 143, 113, 0.25);
+      background: #ffffff;
+    }
+  
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+  
+    .inline {
+      display: flex;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+    }
+  
+    .small { font-size: 0.8rem; color: var(--muted); }
+  
+    .alert {
+      margin-top: 0.6rem;
+      padding: 0.45rem 0.6rem;
+      border-radius: 10px;
+      font-size: 0.8rem;
+      display: none;
+    }
+  
+    .alert-success {
+      background: #e8f5e9;
+      color: #1b5e20;
+      border: 1px solid #c8e6c9;
+    }
+  
+    .alert-error {
+      background: #ffebee;
+      color: #b71c1c;
+      border: 1px solid #ffcdd2;
+    }
+  
+    footer {
+      border-top: 1px solid rgba(173, 190, 180, 0.7);
+      padding: 1.4rem 1.5rem 2.3rem;
+      font-size: 0.8rem;
+      color: #6e7e77;
+      text-align: center;
+      background: transparent;
+    }
+  
+    @media (max-width: 900px) {
+      .two-column {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+  
+    @media (max-width: 720px) {
+      main { padding: 1.2rem; margin-top: 1rem; }
+  
+      nav ul {
+        position: fixed;
+        inset: 55px 0 auto 0;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 0.75rem 1.1rem 1.2rem;
+        background: rgba(248, 252, 249, 0.98);
+        border-bottom: 1px solid rgba(173, 190, 180, 0.7);
+        transform: translateY(-110%);
+        transition: transform 0.2s ease;
+      }
+  
+      nav ul.open { transform: translateY(0); }
+  
+      .nav-cta {
+        width: 100%;
+        text-align: center;
+      }
+  
+      .hamburger { display: flex; }
+      .hero-cards-grid { grid-template-columns: minmax(0, 1fr); }
+    }
+  </style>
+  
+</head>
+<body>
+  <header>
+    <div class="nav-container">
+      <div class="brand">
+        <div class="brand-logo">
+          <img src="C:\Users\alhas\OneDrive\Desktop\(Gutech)\Semester 5\Subjects\Enterprenuership\Projects\The Work\Presentation Slides\My Work\UniBase Logo.png" alt="UniBase logo" />
+        </div>
+        <div class="brand-text">
+          <span>UniBase</span>
+          <span>Mabela • Oman</span>
+        </div>
+      </div>
+      <nav>
+        <div class="hamburger" id="navToggle">
+          <span></span><span></span><span></span>
+        </div>
+        <ul id="navList">
+          <li><a href="#home" class="active">Home</a></li>
+          <li><a href="#living">Living</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#contact" class="nav-cta">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- HOME -->
+    <section id="home">
+      <div class="two-column">
+        <div>
+          <div class="badge">
+            <span class="badge-dot"></span>
+            Student & Female‑Worker Housing
+          </div>
+          <h1>Comfortable, safe living close to campus</h1>
+          <p class="hero-subtitle">
+            UniBase is a modern residential building in Mabela 8 offering private, fully furnished rooms
+            for university students and female workers who want privacy, comfort, and quick access to nearby universities.
+          </p>
+          <div class="hero-cta-row">
+            <button class="btn-primary" onclick="scrollToSection('contact')">
+              Check availability
+              <span>→</span>
+            </button>
+            <button class="btn-ghost" onclick="scrollToSection('living')">
+              Explore the building
+            </button>
+          </div>
+        </div>
+
+        <div>
+          <div class="hero-cards">
+            <div class="card">
+              <div class="card-tag">Location</div>
+              <div class="card-title">Mabela 8</div>
+              <p>
+                Close to several universities with easy access to Muscat Express Highway.
+              </p>
+            </div>
+            <div class="card">
+              <div class="card-tag">Who we serve</div>
+              <div class="card-title">Students & female workers</div>
+              <p>
+                Ideal for residents who value safety, quiet study spaces, and independent living in a dedicated dorm‑style building.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- LIVING -->
+    <section id="living">
+      <div class="section-kicker">Living at UniBase</div>
+      <h2>What you get</h2>
+      <p>
+        The UniBase concept focuses on simple, practical housing: private rooms, essential shared spaces, and helpful services that make day‑to‑day life easier for residents.
+      </p>
+
+      <div class="two-column">
+        <div>
+          <div class="card">
+            <div class="card-tag">Your room</div>
+            <div class="card-title">Private & furnished</div>
+            <ul class="list-compact">
+              <li>Comfortable bed, study desk, storage and AC.</li>
+              <li>Private bathroom and small kitchen area for independent living.</li>
+              <li>High‑speed internet included in the building.</li>
+            </ul>
+          </div>
+          <div class="card" style="margin-top:1rem;">
+            <div class="card-tag">Shared areas</div>
+            <div class="card-title">Space to relax</div>
+            <ul class="list-compact">
+              <li>Recreation room with games such as billiards and table tennis.</li>
+              <li>Shared laundry room with washing machines.</li>
+              <li>Comfortable common corners for studying or meeting friends.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div>
+          <div class="card">
+            <div class="card-tag">Why UniBase</div>
+            <div class="card-title">Designed for students</div>
+            <ul class="list-compact">
+              <li>Purpose‑built off‑campus housing instead of crowded shared apartments.</li>
+              <li>Safe women‑friendly environment with controlled access and CCTV in common areas.</li>
+              <li>Flexible rent options so residents pay only for what they need, such as optional parking or laundry services.</li>
+            </ul>
+            <div class="pill-row">
+              <span class="pill"><span class="pill-dot"></span> Privacy</span>
+              <span class="pill"><span class="pill-dot"></span> Safety</span>
+              <span class="pill"><span class="pill-dot"></span> Near campus</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about">
+      <div class="section-kicker">About UniBase</div>
+      <h2>Our idea in brief</h2>
+      <p>
+        UniBase started as a university entrepreneurship project to solve the lack of affordable,
+        comfortable private housing near universities in Mabela.
+      </p>
+      <p>
+        The vision is to provide a safe, well‑managed building where students and female workers
+        can focus on their studies and work while enjoying a calm place to live.
+      </p>
+
+      <div class="two-column">
+        <div>
+          <div class="card">
+            <div class="card-tag">Goals</div>
+            <div class="card-title">What we aim for</div>
+            <ul class="list-compact">
+              <li>Offer quality rooms at prices that fit a student budget.</li>
+              <li>Maintain high occupancy by staying close to universities and listening to residents’ feedback.</li>
+              <li>Build strong relationships with nearby universities and local service providers.</li>
+            </ul>
+          </div>
+        </div>
+        <div>
+          <div class="card">
+            <div class="card-tag">Future</div>
+            <div class="card-title">Growing the concept</div>
+            <p>
+              If the first building performs well, the UniBase model can be repeated in other high‑demand
+              student areas such as Al Khoudh, with similar private rooms, shared spaces and services.
+            </p>
+    
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact">
+      <div class="section-kicker">Contact</div>
+      <h2>Interested in UniBase?</h2>
+      <p>
+        Use this form as a demo of how future residents could contact the UniBase team to ask about
+        room availability, pricing, or visit times.
+      </p>
+
+      <div class="two-column">
+        <div>
+          <div class="card">
+            <div class="card-tag">Message form</div>
+            <div class="card-title">Send us a note</div>
+            <form id="contactForm">
+              <div>
+                <label for="name">Full name</label>
+                <input id="name" type="text" required />
+              </div>
+              <div class="inline">
+                <div style="flex:1;">
+                  <label for="type">You are a</label>
+                  <select id="type" required>
+                    <option value="">Select</option>
+                    <option>University student</option>
+                    <option>Female worker</option>
+                    <option>Other</option>
+                  </select>
+                </div>
+                <div style="flex:1;">
+                  <label for="institution">University / employer</label>
+                  <input id="institution" type="text" />
+                </div>
+              </div>
+              <div>
+                <label for="message">Message</label>
+                <textarea id="message" placeholder="Ask about rooms, location, or facilities." required></textarea>
+              </div>
+              <button type="submit" class="btn-primary">Submit</button>
+              <div id="contactSuccess" class="alert alert-success">
+                Thank you! Your message has been recorded.
+              </div>
+              <div id="contactError" class="alert alert-error">
+                Please fill in all required fields before submitting.
+              </div>
+            </form>
+          </div>
+        </div>
+        <div>
+          <div class="card">
+            <div class="card-tag">Quick facts</div>
+            <div class="card-title">UniBase at a glance</div>
+            <ul class="list-compact">
+              <li>Off‑campus student and female‑worker housing project in Mabela 8.</li>
+              <li>Concept developed for a business plan at the German University of Technology in Oman.</li>
+              <li>Focus on privacy, safety and simple services that match student needs.</li>
+            </ul>
+            <p class="small">
+              When implemented in reality, this section could include a map link, phone number
+              and social media accounts instead of this placeholder text.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    UniBase - 2025
+  </footer>
+
+  <script>
+    // Mobile navigation
+    const navList = document.getElementById("navList");
+    const navToggle = document.getElementById("navToggle");
+    const navLinks = navList.querySelectorAll("a");
+
+    navToggle.addEventListener("click", () => {
+      navList.classList.toggle("open");
+    });
+
+    navLinks.forEach((link) => {
+      link.addEventListener("click", () => {
+        navList.classList.remove("open");
+      });
+    });
+
+    window.addEventListener("scroll", () => {
+      const fromTop = window.scrollY + 80;
+      navLinks.forEach((link) => {
+        const section = document.querySelector(link.getAttribute("href"));
+        if (!section) return;
+        if (
+          section.offsetTop <= fromTop &&
+          section.offsetTop + section.offsetHeight > fromTop
+        ) {
+          navLinks.forEach((l) => l.classList.remove("active"));
+          link.classList.add("active");
+        }
+      });
+    });
+
+    function scrollToSection(id) {
+      const el = document.getElementById(id);
+      if (el) {
+        window.scrollTo({ top: el.offsetTop - 70, behavior: "smooth" });
+      }
+    }
+
+    // Contact form (demo only)
+    const contactForm = document.getElementById("contactForm");
+    const contactSuccess = document.getElementById("contactSuccess");
+    const contactError = document.getElementById("contactError");
+
+    contactForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      contactSuccess.style.display = "none";
+      contactError.style.display = "none";
+
+      const name = document.getElementById("name").value.trim();
+      const type = document.getElementById("type").value;
+      const message = document.getElementById("message").value.trim();
+
+      if (!name || !type || !message) {
+        contactError.style.display = "block";
+        return;
+      }
+
+      contactSuccess.style.display = "block";
+      contactForm.reset();
+    });
+  </script>
+</body>
+</html>
