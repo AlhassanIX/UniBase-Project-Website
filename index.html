@@ -4,6 +4,8 @@
 
   <link rel="icon" type="image/png" href="UniBase-Logo.png" />
 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <meta charset="UTF-8" />
   <title>UniBase – Student Housing in Mabela</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -481,6 +483,40 @@
       .hamburger { display: flex; }
       .hero-cards-grid { grid-template-columns: minmax(0, 1fr); }
     }
+
+       /* Mobile navbar */
+    @media (max-width: 768px) {
+      .navbar {
+        position: relative;
+      }
+
+      .nav-links {
+        display: none;              /* hide desktop menu */
+        flex-direction: column;
+        position: absolute;
+        top: 60px;                  /* below header */
+        right: 0;
+        width: 100%;
+        background: #f8faf8;
+        padding: 1rem 0;
+      }
+
+      .nav-links a {
+        display: block;
+        padding: 1rem;
+        text-align: center;
+      }
+
+      .menu-toggle {
+        display: block;             /* show hamburger on mobile */
+        position: absolute;
+        right: 1rem;
+        top: 1rem;
+        font-size: 1.5rem;
+        cursor: pointer;
+      }
+    }   
+    
   </style>
   
 </head>
@@ -778,6 +814,7 @@
   </script>
 </body>
 </html>
+
 
 
 
