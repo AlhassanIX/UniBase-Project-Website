@@ -523,6 +523,16 @@
   .hero-cards-grid {
     grid-template-columns: minmax(0, 1fr);
   }
+
+      /* Hide desktop menu by default on mobile */
+  nav ul {
+    display: none;
+  }
+
+  /* Show menu only when hamburger is clicked */
+  nav ul.open {
+    display: flex;
+  }
 }
 
     
@@ -835,6 +845,7 @@
   </script>
 </body>
 </html>
+
 
 
 
